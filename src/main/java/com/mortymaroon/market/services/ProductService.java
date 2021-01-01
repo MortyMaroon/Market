@@ -21,6 +21,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> findAllByPrice(int min, int max) {
+        return productRepository.findAllByPriceBetween(min,max);
+    }
+
     public Product saveOrUpdate(Product product) {
         return productRepository.save(product);
     }

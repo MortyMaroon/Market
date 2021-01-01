@@ -3,10 +3,7 @@ package com.mortymaroon.market.controllers;
 import com.mortymaroon.market.models.Product;
 import com.mortymaroon.market.services.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,12 +14,22 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public List<Product> findAllProducts() {
-        return productService.findAllProduct();
+    public List<Product> findAllProducts(
+            @RequestParam(name = "min_price", defaultValue = "0") Integer minPrice,
+            @RequestParam(name = "max_price", required = false) Integer maxPrice
+    ) {
+        if (maxPrice == null) maxPrice = Integer.MAX_VALUE;
+        return productService.findAllByPrice(minPrice, maxPrice);
     }
 
     @GetMapping("/{id}")
     public Product findProductById(@PathVariable Long id) {
         return productService.findProductById(id).get();
+    }
+
+    @PostMapping
+    public Product saveNewProduct(@RequestBody Product product) {
+        product.setId(null);
+        return productService.saveOrUpdate(product);
     }
 }
