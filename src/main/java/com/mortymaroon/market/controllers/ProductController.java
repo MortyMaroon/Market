@@ -32,4 +32,9 @@ public class ProductController {
         product.setId(null);
         return productService.saveOrUpdate(product);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteProductById(@PathVariable Long id) {
+        productService.deleteProductById(id);
+    }
 }
