@@ -3,6 +3,7 @@ package com.mortymaroon.market.services;
 import com.mortymaroon.market.models.Product;
 import com.mortymaroon.market.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,10 @@ public class ProductService {
 
     public List<Product> findAllByPrice(int min, int max) {
         return productRepository.findAllByPriceBetween(min,max);
+    }
+
+    public List<Product> findAllByPriceWithPagination(int min, int max, int page) {
+        return productRepository.findAllByPriceBetween(min,max, PageRequest.of(page,10)).getContent();
     }
 
     public Product saveOrUpdate(Product product) {

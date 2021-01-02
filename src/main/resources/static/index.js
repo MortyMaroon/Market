@@ -7,12 +7,25 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             method: 'GET',
             params: {
                 min_price: $scope.filter ? $scope.filter.min_price : null,
-                max_price: $scope.filter ? $scope.filter.max_price : null
+                max_price: $scope.filter ? $scope.filter.max_price : null,
+                page: $scope.page
             }
         }).then(function (response) {
             $scope.ProductsList = response.data;
         });
     };
+
+    $scope.nextPage = function () {
+        $scope.page = $scope.page + 1;
+        $scope.fillTable();
+    }
+
+    $scope.previousPage = function () {
+        if ($scope.page > 0) {
+            $scope.page = $scope.page - 1;
+        }
+        $scope.fillTable();
+    }
 
     $scope.submitCreateNewProduct = function() {
         $http.post(contextPath + '/products', $scope.newProduct)
@@ -33,5 +46,6 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             });
     };
 
+    $scope.page = 0;
     $scope.fillTable();
 })
