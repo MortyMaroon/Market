@@ -28,20 +28,20 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product findProductById(@PathVariable Long id) {
+    public ProductDto findProductById(@PathVariable Long id) {
         return productService.findProductById(id).get();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product saveNewProduct(@RequestBody Product product) {
-        product.setId(null);
-        return productService.saveOrUpdate(product);
+    public ProductDto saveNewProduct(@RequestBody ProductDto productDto) {
+        productDto.setId(null);
+        return productService.saveOrUpdate(productDto);
     }
 
     @PutMapping
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.saveOrUpdate(product);
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
+        return productService.saveOrUpdate(productDto);
     }
 
     @DeleteMapping("/{id}")
