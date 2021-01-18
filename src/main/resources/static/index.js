@@ -1,39 +1,32 @@
 angular.module('app',[]).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/market';
+    const contextPath = 'http://localhost:8189/market/api/v1/products';
 
-    $scope.fillTable = function() {
+    $scope.fillTable = function(pageIndex = 1) {
         $http({
-            url: contextPath + '/products',
+            url: contextPath,
             method: 'GET',
             params: {
                 min_price: $scope.filter ? $scope.filter.min_price : null,
                 max_price: $scope.filter ? $scope.filter.max_price : null,
-                page: $scope.page
+                page: pageIndex
             }
         }).then(function (response) {
-            $scope.ProductsList = response.data;
+            $scope.ProductsPage = response.data;
+            $scope.PaginationArray = $scope.generatePageIndexes(1, $scope.ProductsPage.totalPages);
         });
     };
 
-    $scope.nextPage = function () {
-        $scope.page = $scope.page + 1;
-        $scope.fillTable();
-    }
-
-    $scope.previousPage = function () {
-        if ($scope.page > 0) {
-            $scope.page = $scope.page - 1;
+    $scope.generatePageIndexes = function(startPage, endPage) {
+        let arr = [];
+        for (let i = startPage; i < endPage + 1; i++) {
+            arr.push(i)
         }
-        $scope.fillTable();
+        return arr;
     }
 
     $scope.submitCreateNewProduct = function() {
         $http.post(contextPath + '/products', $scope.newProduct)
             .then(function (response) {
-                console.log('sended:');
-                console.log($scope.newProduct);
-                console.log('received');
-                console.log(response.data);
                 $scope.newProduct = null;
                 $scope.fillTable();
             });
@@ -46,6 +39,5 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
             });
     };
 
-    $scope.page = 0;
     $scope.fillTable();
 })
