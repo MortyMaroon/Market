@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Optional<Product> findProductById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDto> findProductById(Long id) {
+        return productRepository.findById(id).stream().map(ProductDto::new).findFirst();
     }
 
     public List<ProductDto> findAll() {
@@ -33,11 +33,21 @@ public class ProductService {
                 originalPage.getTotalElements());
     }
 
-    public Product saveOrUpdate(Product product) {
-        return productRepository.save(product);
+    public ProductDto saveOrUpdate(ProductDto productDto) {
+        if (productDto.getId() == null) {
+            return new ProductDto(productRepository.save(setProductFields(productDto, new Product())));
+        } else {
+            return new ProductDto(productRepository.save(setProductFields(productDto, productRepository.findById(productDto.getId()).get())));
+        }
     }
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    private Product setProductFields(ProductDto src, Product dst) {
+        dst.setTitle(src.getTitle());
+        dst.setPrice(src.getPrice());
+        return dst;
     }
 }
