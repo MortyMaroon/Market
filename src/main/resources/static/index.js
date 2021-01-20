@@ -24,10 +24,42 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
                 maxPageIndex = $scope.ProductsPage.totalPages;
             }
 
-
             $scope.PaginationArray = $scope.generatePageIndexes(minPageIndex, maxPageIndex);
         });
     };
+
+    $scope.fillCart = function() {
+        $http({
+            url: contextPath + '/cart',
+            method: 'GET'
+        }).then(function (response) {
+            $scope.ProductsInCart = response.data;
+        });
+    };
+
+    $scope.deleteProductFromCart = function(id) {
+        $http({
+            url: contextPath + '/cart/delete/',
+            method: 'GET',
+            params: {
+                id : id
+            }
+        }).then(function (response) {
+            $scope.fillCart();
+        });
+    }
+
+    $scope.addProductInCart = function(id) {
+        $http({
+            url: contextPath + '/cart/add/',
+            method: 'GET',
+            params: {
+                id : id
+            }
+        }).then(function (response) {
+            $scope.fillCart();
+        });
+    }
 
     $scope.generatePageIndexes = function(startPage, endPage) {
         let arr = [];
@@ -53,4 +85,5 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     };
 
     $scope.fillTable();
+    $scope.fillCart();
 })
