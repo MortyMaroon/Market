@@ -29,36 +29,24 @@ angular.module('app',[]).controller('indexController', function ($scope, $http) 
     };
 
     $scope.fillCart = function() {
-        $http({
-            url: contextPath + '/cart',
-            method: 'GET'
-        }).then(function (response) {
-            $scope.ProductsInCart = response.data;
-        });
+        $http.get(contextPath + '/cart')
+            .then(function (response) {
+                $scope.ProductsInCart = response.data;
+            });
     };
 
     $scope.deleteProductFromCart = function(id) {
-        $http({
-            url: contextPath + '/cart/delete/',
-            method: 'GET',
-            params: {
-                id : id
-            }
-        }).then(function (response) {
-            $scope.fillCart();
-        });
+        $http.delete(contextPath + '/cart/' + id)
+            .then(function (response) {
+                $scope.fillCart();
+            });
     }
 
     $scope.addProductInCart = function(id) {
-        $http({
-            url: contextPath + '/cart/add/',
-            method: 'GET',
-            params: {
-                id : id
-            }
-        }).then(function (response) {
-            $scope.fillCart();
-        });
+        $http.post(contextPath + /cart/ + id)
+            .then(function (response) {
+                $scope.fillCart();
+            });
     }
 
     $scope.generatePageIndexes = function(startPage, endPage) {

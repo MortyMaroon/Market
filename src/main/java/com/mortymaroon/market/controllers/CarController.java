@@ -19,12 +19,12 @@ public class CarController {
         return cartService.getAllProductsInCar();
     }
 
-    @GetMapping("/add/{id}")
+    @PostMapping("/{id}")
     public void addProductInCar(@PathVariable Long id) {
         cartService.addProductInCar(id);
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProductFromCar(@PathVariable Long id) {
         cartService.deleteProductFromCar(id);
     }

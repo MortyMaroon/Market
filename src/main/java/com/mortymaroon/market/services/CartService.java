@@ -2,9 +2,8 @@ package com.mortymaroon.market.services;
 
 import com.mortymaroon.market.dto.ProductDto;
 import com.mortymaroon.market.exception.ResourceNotfoundException;
-import com.mortymaroon.market.models.Car;
+import com.mortymaroon.market.models.Cart;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,21 +12,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CartService {
     private final ProductService productService;
-    @Autowired
-    private Car car;
+    private final Cart cart;
 
     public List<ProductDto> getAllProductsInCar() {
-        return car.getListOfProduct();
+        return cart.getListOfProduct();
     }
 
     public void addProductInCar(Long id) {
-        car.getListOfProduct().add(productService.
+        cart.getListOfProduct().add(productService.
                 findProductById(id).
                 orElseThrow(()-> new ResourceNotfoundException("Product with id: " + id + " doesn't exist")));
     }
 
     public void deleteProductFromCar(Long id) {
-        car.getListOfProduct().remove(productService.
+        cart.getListOfProduct().remove(productService.
                 findProductById(id).
                 orElseThrow(()-> new ResourceNotfoundException("Product with id: " + id + " doesn't exist")));
     }
