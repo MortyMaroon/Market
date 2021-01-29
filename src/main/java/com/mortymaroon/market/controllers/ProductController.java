@@ -1,20 +1,16 @@
 package com.mortymaroon.market.controllers;
 
 import com.mortymaroon.market.dto.ProductDto;
-import com.mortymaroon.market.exception.MarketError;
 import com.mortymaroon.market.exception.ResourceNotfoundException;
 import com.mortymaroon.market.models.Product;
 import com.mortymaroon.market.repositories.specifications.ProductSpecifications;
 import com.mortymaroon.market.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -30,7 +26,7 @@ public class ProductController {
         if (page < 1) {
             page = 1;
         }
-        return productService.findAll(ProductSpecifications.build(params), page, 3);
+        return productService.findAll(ProductSpecifications.build(params), page, 8);
     }
 
     @GetMapping("/{id}")
